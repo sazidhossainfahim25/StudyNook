@@ -27,27 +27,51 @@ export default function MyListingsPage() {
     fetchMyListings();
   }, []);
 
-  const handleDelete = async (id) => {
-    const isConfirmed = window.confirm(
-      'Are you sure you want to delete this room? This action cannot be undone.'
+  // ডিলিট কনফার্মেশন টোস্ট
+  const handleDelete = (id) => {
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-3 p-1">
+          <p className="font-semibold text-slate-800 text-sm">Are you sure to delete this room?</p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                performDelete(id);
+              }}
+              className="bg-red-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-red-700 transition"
+            >
+              Confirm
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="bg-slate-200 text-slate-800 px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-slate-300 transition"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ),
+      { position: 'top-center', className: 'mt-20' }
     );
+  };
 
-    if (isConfirmed) {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`, {
-          method: 'DELETE',
-        });
-        const data = await res.json();
+  // একচুয়াল ডিলিট লজিক
+  const performDelete = async (id) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
 
-        if (data.deletedCount > 0) {
-          setRooms((prev) => prev.filter((room) => room._id !== id));
-          toast.success('Room deleted successfully!');
-        } else {
-          toast.error('Failed to delete room');
-        }
-      } catch (error) {
-        toast.error('Something went wrong!');
+      if (data.deletedCount > 0) {
+        setRooms((prev) => prev.filter((room) => room._id !== id));
+        toast.success('Room deleted successfully!');
+      } else {
+        toast.error('Failed to delete room');
       }
+    } catch (error) {
+      toast.error('Something went wrong!');
     }
   };
 
@@ -61,15 +85,15 @@ export default function MyListingsPage() {
 
   return (
     <section className="py-10 px-4 min-h-screen bg-slate-50 dark:bg-slate-950">
-      <Toaster position="top-right" />
+      {/* Toast এর পজিশন সেন্টার করা হয়েছে */}
+      <Toaster position="top-center" />
+
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-black text-slate-800 dark:text-white mb-8">My Listings</h2>
 
         {rooms.length === 0 ? (
           <div className="text-center py-20 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
-            <p className="text-slate-500 dark:text-slate-400">
-              You have no listings yet. Start adding your rooms!
-            </p>
+            <p className="text-slate-500 dark:text-slate-400">You have no listings yet.</p>
           </div>
         ) : (
           <div className="overflow-x-auto shadow-sm border border-slate-200 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900">
@@ -99,14 +123,12 @@ export default function MyListingsPage() {
                       <button
                         onClick={() => router.push(`/update-room/${room._id}`)}
                         className="text-indigo-600 hover:text-indigo-800 transition-transform hover:scale-110"
-                        title="Edit Room"
                       >
                         <FaEdit size={18} />
                       </button>
                       <button
                         onClick={() => handleDelete(room._id)}
                         className="text-red-500 hover:text-red-700 transition-transform hover:scale-110"
-                        title="Delete Room"
                       >
                         <FaTrash size={18} />
                       </button>

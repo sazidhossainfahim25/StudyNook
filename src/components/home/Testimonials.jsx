@@ -1,63 +1,93 @@
+'use client';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
 import { Quote } from 'lucide-react';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 export default function Testimonials() {
+  const testimonials = [
+    {
+      quote: 'StudyNook is a game-changer for our research team.',
+      name: 'Sarah M.',
+      role: 'Postgrad',
+      initials: 'SM',
+    },
+    {
+      quote: 'The dashboard is incredibly clean and intuitive.',
+      name: 'David R.',
+      role: 'Researcher',
+      initials: 'DR',
+    },
+    {
+      quote: 'I never miss a slot anymore, thanks to the alerts.',
+      name: 'Emily C.',
+      role: 'Student',
+      initials: 'EC',
+    },
+    {
+      quote: 'Absolutely essential for our campus library work.',
+      name: 'James K.',
+      role: 'PhD Candidate',
+      initials: 'JK',
+    },
+  ];
+
   return (
-    <section className="bg-slate-900 text-white py-20 px-4 sm:px-6 lg:px-8 overflow-hidden relative rounded-3xl max-w-7xl mx-auto shadow-xl">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_var(--tw-gradient-stops))] from-indigo-950 via-transparent to-transparent opacity-40" />
-
-      <div className="relative z-10 space-y-16">
-        <div className="text-center space-y-2">
-          <span className="text-xs font-black text-orange-400 uppercase tracking-widest block">
-            Success Stories
-          </span>
-          <h2 className="text-2xl lg:text-4xl font-black uppercase tracking-tight">
-            Trusted By Dedicated Researchers
-          </h2>
-          <div className="h-1 w-12 bg-orange-500 mx-auto rounded-full" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-slate-950/40 border border-slate-800 p-8 rounded-3xl flex flex-col justify-between space-y-6">
-            <Quote className="w-8 h-8 text-orange-500 opacity-60 shrink-0" />
-            <p className="text-slate-300 text-sm md:text-base font-medium leading-relaxed italic">
-              "Securing a silent group study corner right before final exams used to be a nightmare.
-              With StudyNook, our engineering cohort managed to secure slots consecutive mornings
-              smoothly without any scheduling overlaps."
-            </p>
-            <div className="flex items-center gap-3 pt-2">
-              <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-orange-400 text-xs uppercase border border-slate-700">
-                SM
-              </div>
-              <div>
-                <h4 className="text-xs font-black uppercase tracking-wide">Sarah Mitchell</h4>
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                  Postgraduate Student
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-slate-950/40 border border-slate-800 p-8 rounded-3xl flex flex-col justify-between space-y-6">
-            <Quote className="w-8 h-8 text-orange-500 opacity-60 shrink-0" />
-            <p className="text-slate-300 text-sm md:text-base font-medium leading-relaxed italic">
-              "As an owner of an allocated research space on the third floor, StudyNook allowed me
-              to easily share the resource with other undergraduates during times when I am away for
-              field research. The dashboard management is incredibly clean."
-            </p>
-            <div className="flex items-center gap-3 pt-2">
-              <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-orange-400 text-xs uppercase border border-slate-700">
-                DR
-              </div>
-              <div>
-                <h4 className="text-xs font-black uppercase tracking-wide">David Reynolds</h4>
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                  Research Associate
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+    <section className="py-20 px-6 max-w-7xl mx-auto transition-colors duration-500">
+      {/* Section Header */}
+      <div className="text-center mb-16 space-y-2">
+        <span className="text-orange-600 dark:text-orange-400 font-bold text-sm tracking-[0.2em] uppercase">
+          Success Stories
+        </span>
+        <h2 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
+          Trusted By Researchers
+        </h2>
       </div>
+
+      {/* Swiper Slider Component */}
+      <Swiper
+        modules={[Autoplay, Pagination]}
+        spaceBetween={30}
+        slidesPerView={1}
+        loop={true}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
+        breakpoints={{
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
+        className="pb-12"
+      >
+        {testimonials.map((item, idx) => (
+          <SwiperSlide key={idx} className="h-auto">
+            {/* Testimonial Card with Glassmorphism/Neutral theme */}
+            <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-200 dark:border-slate-800 h-full flex flex-col space-y-6 shadow-sm hover:shadow-xl transition-all duration-300">
+              <Quote className="w-10 h-10 text-orange-500 opacity-50" />
+
+              <p className="text-slate-600 dark:text-slate-300 italic flex-grow leading-relaxed">
+                "{item.quote}"
+              </p>
+
+              {/* Profile section */}
+              <div className="flex items-center gap-4 border-t border-slate-100 dark:border-slate-800 pt-4">
+                <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/20 flex items-center justify-center font-bold text-orange-600 dark:text-orange-400">
+                  {item.initials}
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-900 dark:text-white">{item.name}</h4>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 uppercase tracking-widest">
+                    {item.role}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </section>
   );
 }

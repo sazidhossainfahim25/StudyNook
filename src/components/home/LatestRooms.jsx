@@ -2,80 +2,78 @@ import Link from 'next/link';
 
 export default function LatestRooms({ rooms }) {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-      <div className="text-center space-y-2">
-        <span className="text-xs font-black text-orange-600 uppercase tracking-widest block">
-          Fresh Listings
+    <section className="max-w-7xl mx-auto px-6 py-20">
+      {/* Header Section */}
+      <div className="text-center space-y-4 mb-16">
+        <span className="text-violet-600 dark:text-violet-400 font-bold text-sm tracking-[0.2em] uppercase">
+          Explore Recently Added
         </span>
-        <h2 className="text-2xl lg:text-4xl font-black text-slate-900 uppercase tracking-tight">
-          Newly Added Spaces
+        <h2 className="text-4xl lg:text-5xl font-black text-slate-900 dark:text-white uppercase tracking-tight">
+          Featured{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-cyan-500">
+            Study Spaces
+          </span>
         </h2>
-        <div className="h-1 w-12 bg-orange-600 mx-auto rounded-full" />
+        <div className="h-1 w-20 bg-gradient-to-r from-violet-600 to-cyan-500 mx-auto rounded-full" />
       </div>
 
       {rooms.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-3xl border border-slate-100 shadow-sm">
-          <p className="text-slate-500 font-medium">
-            No study rooms available at the moment. Check back later!
-          </p>
+        <div className="text-center py-20 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-3xl">
+          <p className="text-slate-500 font-medium">No study rooms available at the moment.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {rooms.map((room) => (
             <div
               key={room._id}
-              className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group h-full"
+              className="group bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 hover:border-violet-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-violet-500/10 flex flex-col"
             >
-              <div>
-                <div className="h-52 w-full overflow-hidden bg-slate-100 relative">
-                  <img
-                    src={room.image}
-                    alt={room.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md text-white font-black text-xs px-3 py-1.5 rounded-xl tracking-tight">
-                    ${room.hourlyRate || room.price}/hr
-                  </div>
-                </div>
-
-                <div className="p-6 space-y-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                      <span>{room.floor || 'Main Floor'}</span>
-                      <span>•</span>
-                      <span>Cap: {room.capacity} People</span>
-                    </div>
-                    <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight line-clamp-1 group-hover:text-orange-600 transition-colors">
-                      {room.name}
-                    </h3>
-                  </div>
-
-                  <p className="text-slate-500 text-xs md:text-sm leading-relaxed font-medium line-clamp-2">
-                    {room.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1 pt-1">
-                    {room.amenities?.slice(0, 3).map((amenity, idx) => (
-                      <span
-                        key={idx}
-                        className="text-[9px] font-bold bg-slate-50 text-slate-600 px-2 py-1 rounded-md border border-slate-100"
-                      >
-                        {amenity}
-                      </span>
-                    ))}
-                    {room.amenities?.length > 3 && (
-                      <span className="text-[9px] font-bold bg-orange-50 text-orange-600 px-2 py-1 rounded-md border border-orange-100">
-                        +{room.amenities.length - 3} more
-                      </span>
-                    )}
-                  </div>
+              {/* Room Image */}
+              <div className="h-60 w-full overflow-hidden relative">
+                <img
+                  src={room.image}
+                  alt={room.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute top-4 right-4 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-bold shadow-sm">
+                  ${room.hourlyRate || room.price}/hr
                 </div>
               </div>
 
-              <div className="p-6 pt-0">
+              {/* Room Details */}
+              <div className="p-7 space-y-4 flex-grow">
+                <div className="flex items-center gap-3 text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                  <span>{room.floor || 'Main Floor'}</span>
+                  <span>•</span>
+                  <span>{room.capacity} Seats</span>
+                </div>
+
+                <h3 className="text-xl font-black text-slate-900 dark:text-white group-hover:text-violet-600 transition-colors">
+                  {room.name}
+                </h3>
+
+                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2">
+                  {room.description}
+                </p>
+
+                {/* Amenities */}
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {room.amenities?.slice(0, 3).map((amenity, idx) => (
+                    <span
+                      key={idx}
+                      className="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-3 py-1 rounded-full"
+                    >
+                      {amenity}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* CTA Button */}
+              <div className="p-7 pt-0">
                 <Link
                   href={`/rooms/${room._id}`}
-                  className="w-full py-3 bg-slate-950 hover:bg-orange-600 text-white text-center font-bold rounded-xl transition-all duration-300 uppercase tracking-widest text-[10px] block shadow-sm"
+                  className="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-violet-600 dark:hover:bg-violet-500 transition-colors rounded-2xl font-bold text-sm uppercase tracking-widest text-center block"
                 >
                   View Details
                 </Link>
