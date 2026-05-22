@@ -18,15 +18,24 @@ export default async function AllRoomsPage({ searchParams }) {
         .filter(Boolean)
     : [];
 
-  const allRooms = (await fetchRooms()) || [];
+  // ডেটা ফেচ করা এবং নিশ্চিত করা যে এটি একটি অ্যারে
+  const rawData = await fetchRooms();
+  const allRooms = Array.isArray(rawData) ? rawData : [];
+
+  // Amenities ফিল্টার করার জন্য ইউনিক লিস্ট তৈরি (নিরাপদ উপায়)
   const allAmenitiesSet = new Set();
-  allRooms.forEach((room) => room?.amenities?.forEach((a) => allAmenitiesSet.add(a)));
+  allRooms.forEach((room) => {
+    if (room?.amenities && Array.isArray(room.amenities)) {
+      room.amenities.forEach((a) => allAmenitiesSet.add(a));
+    }
+  });
   const dynamicAmenities = Array.from(allAmenitiesSet);
 
+  // ফিল্টারিং লজিক
   const rooms = allRooms.filter((room) => {
     if (!room) return false;
     const matchesSearch = room.name?.toLowerCase().includes(search.toLowerCase());
-    const roomAmenities = room.amenities?.map((a) => a.trim()) || [];
+    const roomAmenities = Array.isArray(room.amenities) ? room.amenities.map((a) => a.trim()) : [];
     const matchesAmenities =
       selectedAmenities.length === 0
         ? true
@@ -36,7 +45,6 @@ export default async function AllRoomsPage({ searchParams }) {
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8 min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-      {/* HEADER */}
       <div className="text-center space-y-4 mb-12">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           Available <span className="text-indigo-600">Study Rooms</span>
@@ -46,7 +54,6 @@ export default async function AllRoomsPage({ searchParams }) {
         </p>
       </div>
 
-      {/* SEARCH + FILTER */}
       <div className="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row gap-3 mb-12 max-w-4xl mx-auto">
         <form method="GET" action="/rooms" className="relative flex-1">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
@@ -65,7 +72,6 @@ export default async function AllRoomsPage({ searchParams }) {
             Filters {selectedAmenities.length > 0 && `(${selectedAmenities.length})`}
           </button>
 
-          {/* Filter Dropdown */}
           <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-xl hidden group-hover:block z-50 p-4">
             <p className="text-xs font-bold text-slate-400 uppercase mb-3">Select Amenities</p>
             {dynamicAmenities.map((amenity) => {
@@ -91,7 +97,6 @@ export default async function AllRoomsPage({ searchParams }) {
         </div>
       </div>
 
-      {/* GRID */}
       {rooms.length === 0 ? (
         <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-slate-300 dark:border-slate-700">
           <p className="text-slate-400 font-medium">No rooms found matching your criteria.</p>
@@ -106,7 +111,7 @@ export default async function AllRoomsPage({ searchParams }) {
               <div className="relative h-56 w-full overflow-hidden">
                 <Image
                   src={room.image || '/images/img.jpeg'}
-                  alt={room.name}
+                  alt={room.name || 'Room Image'}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -124,7 +129,6 @@ export default async function AllRoomsPage({ searchParams }) {
                     <Users size={16} /> {room.capacity} seats
                   </span>
                 </div>
-
                 <p className="text-slate-600 dark:text-slate-300 text-sm mb-6 flex-1">
                   {room.description?.slice(0, 80)}...
                 </p>

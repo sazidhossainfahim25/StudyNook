@@ -1,5 +1,6 @@
 'use server';
-
+import { headers } from 'next/headers';
+import { auth } from '../auth';
 import { revalidatePath } from 'next/cache';
 
 export const UpdateRoomAction = async (formData) => {
@@ -13,10 +14,16 @@ export const UpdateRoomAction = async (formData) => {
     description: data.description,
     amenities: formData.getAll('amenities'),
   };
-
+  
+ const { token } = await auth.api.getToken({
+   headers: await headers(),
+ });
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/update-room/${id}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(updatedRoom),
   });
 

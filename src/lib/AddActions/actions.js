@@ -1,7 +1,6 @@
-'use server';
-
-'use server';
-
+"use server";
+import { headers } from 'next/headers';
+import { auth } from '../auth';
 export const AddRoomAction = async (formData) => {
   const data = Object.fromEntries(formData);
 
@@ -15,11 +14,15 @@ export const AddRoomAction = async (formData) => {
     amenities: formData.getAll('amenities'),
     bookingCount: 0,
   };
-
+ const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
+  
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/add-room`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(NewRoom),
   });

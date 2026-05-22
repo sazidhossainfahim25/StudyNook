@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 export default function LatestRooms({ rooms }) {
+   const safeRooms = Array.isArray(rooms) ? rooms : [];
   return (
     <section className="max-w-7xl mx-auto px-6 py-20">
       {/* Header Section */}
@@ -17,13 +18,13 @@ export default function LatestRooms({ rooms }) {
         <div className="h-1 w-20 bg-gradient-to-r from-violet-600 to-cyan-500 mx-auto rounded-full" />
       </div>
 
-      {rooms.length === 0 ? (
+      {safeRooms.length === 0 ? (
         <div className="text-center py-20 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-3xl">
           <p className="text-slate-500 font-medium">No study rooms available at the moment.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {rooms.map((room) => (
+          {safeRooms.map((room) => (
             <div
               key={room._id}
               className="group bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-800 hover:border-violet-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-violet-500/10 flex flex-col"
