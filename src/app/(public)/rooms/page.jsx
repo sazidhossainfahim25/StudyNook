@@ -18,11 +18,11 @@ export default async function AllRoomsPage({ searchParams }) {
         .filter(Boolean)
     : [];
 
-  // ডেটা ফেচ করা এবং নিশ্চিত করা যে এটি একটি অ্যারে
+  
   const rawData = await fetchRooms();
   const allRooms = Array.isArray(rawData) ? rawData : [];
 
-  // Amenities ফিল্টার করার জন্য ইউনিক লিস্ট তৈরি (নিরাপদ উপায়)
+ 
   const allAmenitiesSet = new Set();
   allRooms.forEach((room) => {
     if (room?.amenities && Array.isArray(room.amenities)) {

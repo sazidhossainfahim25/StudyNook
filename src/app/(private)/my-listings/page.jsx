@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { toast, Toaster } from 'react-hot-toast';
 import { FaEdit, FaTrash, FaSpinner } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
+import { authClient } from '@/lib/auth-client';
 
 export default function MyListingsPage() {
   const [rooms, setRooms] = useState([]);
@@ -13,7 +14,14 @@ export default function MyListingsPage() {
   const fetchMyListings = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-rooms`);
+      const { data:tokenData } = await authClient.token();
+            console.log(tokenData)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-rooms`, {
+      credentials: 'include',
+      headers: {
+        authorization: `Bearer ${tokenData?.token}`,
+      },
+    });
       const data = await res.json();
       setRooms(data);
     } catch (error) {

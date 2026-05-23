@@ -59,7 +59,13 @@ export default function HeroBanner() {
           className="relative lg:block"
         >
           <div className="relative w-full h-[450px] rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-            <Image src="/images/img.jpeg" fill sizes="100vw" alt="banner" />
+            <Image
+              src="/images/img.jpeg"
+              alt="hero"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
           </div>
         </motion.div>
       </div>

@@ -1,4 +1,5 @@
 'use client';
+import { authClient } from '@/lib/auth-client';
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -11,16 +12,26 @@ export default function MyBookings() {
     try {
       setLoading(true);
 
+      const { data: tokenData } = await authClient.token();
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings`, {
+        method: 'GET',
         credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${tokenData?.token}`,
+        },
       });
 
-      if (!res.ok) throw new Error('Failed to fetch');
-
       const data = await res.json();
-      setBookings(data);
+
+      if (!res.ok) {
+        throw new Error(data?.message || 'Failed');
+      }
+
+      setBookings(Array.isArray(data) ? data : []);
     } catch (error) {
       toast.error('Failed to load bookings');
+      setBookings([]);
     } finally {
       setLoading(false);
     }
