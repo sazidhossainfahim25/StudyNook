@@ -1,4 +1,5 @@
-// This file contains functions to fetch booking data from the API
+// This file contains functions to fetch booking data from api
+
 import { headers } from 'next/headers';
 import { auth } from '../auth';
 
