@@ -4,8 +4,8 @@ import { auth } from '../auth';
 
 export const fetchBookings = async () => {
   const { token } = await auth.api.getToken({
-      headers: await headers(),
-    });
+    headers: await headers(),
+  });
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings`, {
     headers: {
       authorization: `Bearer ${token}`,
@@ -17,9 +17,9 @@ export const fetchBookings = async () => {
 };
 // This function fetches a single booking by its ID
 export const fetchBookingById = async (id) => {
-    const { token } = await auth.api.getToken({
-        headers: await headers(),
-      });
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings/${id}`, {
       headers: {

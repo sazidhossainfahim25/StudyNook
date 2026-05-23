@@ -2,12 +2,15 @@
 
 import Link from 'next/link';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 import { authClient } from '@/lib/auth-client';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
 const LoginPage = () => {
+  const router = useRouter();
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -24,6 +27,7 @@ const LoginPage = () => {
       toast.error(error.message || 'Login failed!');
     } else {
       toast.success('Login Successful! Welcome back.');
+      router.push('/');
     }
   };
 

@@ -1,5 +1,5 @@
-import { headers } from "next/headers";
-import { auth } from "../auth";
+import { headers } from 'next/headers';
+import { auth } from '../auth';
 
 export const fetchRooms = async () => {
   const { token } = await auth.api.getToken({
@@ -20,7 +20,7 @@ export const fetchRoomById = async (id) => {
   const { token } = await auth.api.getToken({
     headers: await headers(),
   });
-  // console.log(token);
+  console.log(token);
 
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/rooms/${id}`, {

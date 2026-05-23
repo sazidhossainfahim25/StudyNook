@@ -48,7 +48,6 @@ export default function HeroBanner() {
               Explore Rooms{' '}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-          
           </div>
         </motion.div>
 
@@ -60,13 +59,7 @@ export default function HeroBanner() {
           className="relative lg:block"
         >
           <div className="relative w-full h-[450px] rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-            <Image
-              src="/images/img.jpeg"
-              alt="Study Room"
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-
+            <Image src="/images/img.jpeg" fill sizes="100vw" alt="banner" />
           </div>
         </motion.div>
       </div>

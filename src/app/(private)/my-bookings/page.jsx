@@ -10,10 +10,13 @@ export default function MyBookings() {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-bookings`, {
+
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookings`, {
         credentials: 'include',
       });
+
       if (!res.ok) throw new Error('Failed to fetch');
+
       const data = await res.json();
       setBookings(data);
     } catch (error) {
@@ -22,6 +25,10 @@ export default function MyBookings() {
       setLoading(false);
     }
   };
+
+
+
+
 
   useEffect(() => {
     fetchBookings();
@@ -96,7 +103,9 @@ export default function MyBookings() {
       <Toaster position="top-center" toastOptions={{ className: 'mt-20' }} />
 
       <div className="mb-8">
-        <h2 className="text-3xl font-extrabold text-slate-800 dark:text-white">My Bookings</h2>
+        <h2 className="text-3xl font-extrabold text-slate-800 dark:text-white">
+          My Bookings {bookings.length}
+        </h2>
         <p className="text-slate-500 mt-1">Manage your reserved study rooms here.</p>
       </div>
 
