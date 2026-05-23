@@ -15,7 +15,7 @@ export default function MyListingsPage() {
     try {
       setLoading(true);
       const { data:tokenData } = await authClient.token();
-            console.log(tokenData)
+            // console.log(tokenData)
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-rooms`, {
       credentials: 'include',
       headers: {

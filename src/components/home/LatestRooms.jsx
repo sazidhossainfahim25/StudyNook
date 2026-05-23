@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 export default function LatestRooms({ rooms = [] }) {
-  console.log(rooms);
+ 
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-20">
