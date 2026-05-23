@@ -1,6 +1,7 @@
 # StudyNook – Library Study Room Booking System
 
-Live Site: https://your-live-site-url.com
+Live Site: https://study-nook-flax.vercel.app
+
 
 ---
 
