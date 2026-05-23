@@ -15,7 +15,7 @@ export const fetchBookings = async () => {
   const data = await res.json();
   return data;
 };
-// This function fetches a single booking by its ID
+// This function fetches a single booking id
 export const fetchBookingById = async (id) => {
   const { token } = await auth.api.getToken({
     headers: await headers(),
